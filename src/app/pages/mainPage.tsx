@@ -1,23 +1,18 @@
-import { useEffect } from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { getPosts, loadPostsList } from '../store/reducers/posts'
+import { Container } from 'reactstrap'
+import Header from '../components/header'
+import Navigation from '../components/navigation'
+import PostsDesk from '../components/postsDesk'
 
 const MainPage = () => {
-  const dispatch = useAppDispatch()
-  const { posts } = useAppSelector(getPosts())
-
-  useEffect(() => {
-    dispatch(loadPostsList())
-  }, [])
-
   return (
-    <div>
-      {posts.map((post) => (
-        <p key={post.id}>
-          {post.id} {post.title} {post.body}
-        </p>
-      ))}
-    </div>
+    <Container fluid className='p-0'>
+      <Navigation />
+      <Header
+        title='SetRedEyes Blog Website'
+        headline='Improvise, Adapt, Overcome'
+      />
+      <PostsDesk />
+    </Container>
   )
 }
 

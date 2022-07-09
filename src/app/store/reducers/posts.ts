@@ -24,7 +24,7 @@ const postsSlice = createSlice({
     postsRequested: (state) => {
       state.isLoading = true
     },
-    postsRecieved: (state, action:PayloadAction<IPost[]>) => {
+    postsRecieved: (state, action: PayloadAction<IPost[]>) => {
       state.posts = action.payload
       state.isLoading = false
     },
@@ -39,9 +39,8 @@ const postsSlice = createSlice({
       state.posts = state.posts.filter((c) => c.id !== action.payload)
     },
     postUpdated: (state, action) => {
-      state.posts[
-        state.posts.findIndex((p) => p.id === action.payload.id)
-      ] = action.payload
+      state.posts[state.posts.findIndex((p) => p.id === action.payload.id)] =
+        action.payload
     }
   }
 })
@@ -67,7 +66,7 @@ export const loadPostsList = () => async (dispatch: AppDispatch) => {
 
   try {
     const data = await postsService.fetchAll()
-    
+
     dispatch(postsRecieved(data))
   } catch (error) {
     dispatch(postsRequestFailed(checkErrorMessageType(error)))
@@ -75,5 +74,6 @@ export const loadPostsList = () => async (dispatch: AppDispatch) => {
 }
 
 export const getPosts = () => (state: RootState) => state.posts
-
+export const getPostsLoadingStatus = () => (state: RootState) =>
+  state.posts.isLoading
 export default postsReducer

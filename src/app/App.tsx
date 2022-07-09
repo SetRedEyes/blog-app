@@ -7,7 +7,7 @@ const App = () => {
      {routes.map((route) => {
         return (
           <Route
-            key={route.path}
+            key={route.name}
             path={route.path}
             element={<route.element />}
           />
