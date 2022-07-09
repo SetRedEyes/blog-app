@@ -14,7 +14,7 @@ const PostPreview = ({ id, title, text }: IPostPreviewProps) => {
         <Link
           to={`/posts/${id}`}
           style={{ textDecoration: 'none' }}
-          className='text-secondary'
+          className='text-dark'
         >
           <h2>
             <strong>{title}</strong>

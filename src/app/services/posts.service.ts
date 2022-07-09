@@ -5,11 +5,10 @@ const postEndpoint = 'posts/'
 const postsService = {
   fetchAll: async () => {
     const { data } = await httpService.get<IPost[]>(postEndpoint)
-    
     return data
   },
-  createPost: async () => {
-    const { data } = await httpService.post<IPost>(postEndpoint)
+  createPost: async (payload: IPost) => {
+    const { data } = await httpService.post<IPost>(postEndpoint,payload)
     return data
   },
   removePost: async (id: IPost['id']) => {

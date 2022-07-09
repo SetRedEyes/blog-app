@@ -73,6 +73,17 @@ export const loadPostsList = () => async (dispatch: AppDispatch) => {
   }
 }
 
+export const createPost = (payload: IPost) => async (dispatch: AppDispatch) => {
+  dispatch(addPostRequested())
+  try {
+      const data = await postsService.createPost(payload)
+
+      dispatch(postCreated(data))
+  } catch (error) {
+      dispatch(postsRequestFailed(checkErrorMessageType(error)))
+  }
+}
+
 export const getPosts = () => (state: RootState) => state.posts
 export const getPostsLoadingStatus = () => (state: RootState) =>
   state.posts.isLoading
