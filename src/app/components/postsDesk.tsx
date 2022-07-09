@@ -8,6 +8,7 @@ import {
   loadPostsList
 } from '../store/reducers/posts'
 import LoadingSpinner from './loadingSpinner'
+import PostPreview from './postPreview'
 
 const PostsDesk = () => {
   const dispatch = useAppDispatch()
@@ -22,7 +23,7 @@ const PostsDesk = () => {
     return <LoadingSpinner>Loading posts...</LoadingSpinner>
   }
   return (
-    <Container className='d-flex mt-4 justify-content-center flex-column'>
+    <Container className='mt-4'>
       {!posts.length && (
         <p>
           There are no posts yet, you should <Link to='/edit'>create</Link> one
@@ -30,9 +31,15 @@ const PostsDesk = () => {
         </p>
       )}
       {posts.map((post) => (
-        <p key={post.id}>
-          {post.id} {post.title} {post.body}
-        </p>
+        <>
+        <PostPreview
+          key={post.id}
+          id={post.id}
+          title={post.title}
+          text={post.body}
+        />
+        <hr />
+        </>
       ))}
     </Container>
   )
