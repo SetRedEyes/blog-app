@@ -15,7 +15,7 @@ const Navigation = () => {
     <Navbar color='light' light sticky='top' expand='md' className='p-1'>
       <Container className='d-flex'>
         <NavbarBrand tag={Link} to='/'>
-          📝
+          📝 Home
         </NavbarBrand>
         <Nav className='me-auto' navbar />
         <div>

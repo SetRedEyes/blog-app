@@ -12,15 +12,15 @@ const PostPreview = ({ id, title, content }: IPostPreviewProps) => {
     <Card className='border-0 mb-4'>
       <CardBody className='p-0'>
         <Link
-          to={`post/${id}`}
+          to={`/post/${id}`}
           style={{ textDecoration: 'none' }}
           className='text-dark'
         >
           <h2>
             <strong>{title}</strong>
           </h2>
+          {content}
         </Link>
-        {content}
       </CardBody>
     </Card>
   )

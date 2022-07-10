@@ -6,191 +6,124 @@ import {
   getPostById,
   createPost,
   updatePostData,
-  getPostsLoadingStatus
+  getPostsLoadingStatus,
+  getNewPostId
 } from '../store/reducers/posts'
-import htmlToDraft from 'html-to-draftjs'
-import draftToHtml from 'draftjs-to-html'
 import LoadingSpinner from '../components/loadingSpinner'
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 import Header from '../components/header'
 import Navigation from '../components/navigation'
 import ErrorText from '../components/errorText'
-import { Editor } from 'react-draft-wysiwyg'
 import SuccessText from '../components/successText'
 import { Link } from 'react-router-dom'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
+import TextField from '../components/form/textField'
+import { validator } from '../utils/validator'
+import TextAreaField from '../components/form/textAreaField'
 
 const EditPage = () => {
   const postId = useParams().postId
-  console.log(postId)
-
-  const postsLoading = useAppSelector(getPostsLoadingStatus())
-  const post = useAppSelector(getPostById(Number(postId)))
-
-  const dispatch = useAppDispatch()
-
   const [data, setData] = useState({
     title: '',
     body: ''
   })
 
-  const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty()
-  )
+  const dispatch = useAppDispatch()
+  const post = useAppSelector(getPostById(Number(postId)))
+  const postsLoading = useAppSelector(getPostsLoadingStatus())
 
-  const [saving, setSaving] = useState(false)
-  const [loading, setLoading] = useState(true)
-
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [success, setSuccess] = useState('')
-  const [error, setError] = useState('')
+  const [isCreated, setCreated] = useState(false)
+  const newPostId = useAppSelector(getNewPostId())
 
   useEffect(() => {
-    if (!postsLoading && post) {
-      getPost()
+    if (!postsLoading && postId && post) {
+      setData({ ...post })
+    }
+  }, [])
+
+  const handleChange = (target: { name: string; value: string }) => {
+    setData((prevState) => ({
+      ...prevState,
+      [target.name]: target.value
+    }))
+  }
+
+  const validatorConfig = {
+    title: {
+      isRequired: {
+        message: 'Tittle is required'
+      }
+    }
+  }
+
+  const validate = () => {
+    const errors = validator(data, validatorConfig)
+    setErrors(errors)
+    return Object.keys(errors).length === 0
+  }
+
+  useEffect(() => {
+    validate()
+  }, [data])
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const isValid = validate()
+    if (!isValid) return
+    if (postId) {
+      dispatch(updatePostData({ ...data, id: Number(postId) }))
+      setSuccess('Blog updated!')
     } else {
-      setLoading(false)
+      dispatch(createPost(data))
+      setCreated(true)
+      setSuccess('Post created. You can continue to edit it on this page.')
     }
-  }, [postId])
-
-  const getPost = async () => {
-    if (post) {
-     console.log(data.body)
-
-      setData({ body: post.body, title: post.title })
-      const contentPost = htmlToDraft(post.body)
-      const contentState = ContentState.createFromBlockArray(
-        contentPost.contentBlocks
-      )
-      const _editorState = EditorState.createWithContent(contentState)
-      setEditorState(_editorState)
-    } else {
-      setError(`Unable to retrieve post ${postId} `)
-    }
-    setLoading(false)
   }
+  const isValid = Object.keys(errors).length !== 0
 
-  const addPost = async () => {
-    if (data.title === '' || data.body === '') {
-      setError('Pleace fill out all required forms.')
-      setSuccess('')
-      return null
-    }
-
-    setError('')
-    setSuccess('')
-    setSaving(true)
-    await dispatch(createPost(data))
-    setSuccess('Post created. You can continue to edit it on this page.')
-    setSaving(false)
-  }
-
-  const editPost = async () => {
-    if (data.title === '' || data.body === '') {
-      setError('Pleace fill out all required forms.')
-      setSuccess('')
-      return null
-    }
-
-    setError('')
-    setSuccess('')
-    setSaving(true)
-    await dispatch(updatePostData({ ...data, id: Number(postId) }))
-    setSuccess('Blog updated!')
-    setSaving(false)
-  }
-
-  if (loading || postsLoading) {
-    return <LoadingSpinner>Loading editor...</LoadingSpinner>
-  }
   return (
     <Container fluid className='p-0'>
       <Navigation />
       <Header
         headline=''
-        title={postId ? 'Edit your post' : 'Create a new post'}
+        title={postId || isCreated ? 'Edit your post' : 'Create a new post'}
       ></Header>
       <Container className='mt-5 mb-5'>
-        <ErrorText error={error} />
-        <Form>
-          <FormGroup>
-            <Label for='title'>Title *</Label>
-            <Input
-              type='text'
-              value={data.title}
-              id='title'
-              placeholder='Enter a title...'
-              disabled={saving}
-              onChange={(event) =>
-                setData({ ...data, title: event.target.value })
-              }
-            />
-          </FormGroup>
-          <FormGroup>
-            <Label for='title'>Content</Label>
-            <Editor
-              editorState={editorState}
-              wrapperClassName='card'
-              editorClassName='card-body'
-              onEditorStateChange={(newState) => {
-                setEditorState(newState)
-                setData({
-                  ...data,
-                  body: draftToHtml(convertToRaw(newState.getCurrentContent())).replace(/<[^>]+>/g, '')
-                })
-              }}
-              toolbar={{
-                options: [
-                  'inline',
-                  'blockType',
-                  'fontSize',
-                  'list',
-                  'textAlign',
-                  'history',
-                  'embedded',
-                  'emoji',
-                  'image'
-                ],
-                inline: { inDropdown: true },
-                list: { inDropdown: true },
-                textAlign: { inDropdown: true },
-                link: { inDropdown: true },
-                history: { inDropdown: true }
-              }}
-            />
-          </FormGroup>
+        <Form onSubmit={handleSubmit}>
+          <TextField
+            label='Title *'
+            value={data.title}
+            name='title'
+            placeholder='Enter a title...'
+            onChange={handleChange}
+            error={errors.title}
+          />
+          <TextAreaField
+            value={data.body}
+            onChange={handleChange}
+            name='body'
+            label='Content'
+            error={errors.content}
+          />
           <FormGroup>
             <SuccessText success={success} />
           </FormGroup>
-          <FormGroup>
-            <Button
-              className='mb-2'
-              block
-              onClick={() => {
-                postId ? editPost() : addPost()
-              }}
-              disabled={saving}
-            >
-              <i className='fas fa-save mr-1' />
-              {postId ? ' Update' : ' Create'}
-            </Button>
-
-            {postId && (
-              <Button block color='success' tag={Link} to={`post/${postId}`}>
-                View your post!
-              </Button>
-            )}
-          </FormGroup>
-          <FormGroup>
-            <Label>Preview</Label>
-            <div className='border p-2'>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: data.body
-                }}
-              ></div>
-            </div>
-          </FormGroup>
+          <Button block className='mb-2' disabled={isValid}>
+            <i className='fas fa-save mr-1' />
+            {postId || isCreated ? ' Update' : ' Create'}
+          </Button>
         </Form>
+        {(postId || isCreated) && (
+          <Button
+            block
+            color='success'
+            tag={Link}
+            to={`/post/${postId ?? newPostId}`}
+          >
+            View your post!
+          </Button>
+        )}
       </Container>
     </Container>
   )

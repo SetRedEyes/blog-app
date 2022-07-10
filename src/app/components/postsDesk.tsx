@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
-import {  useAppSelector } from '../hooks/redux'
+import { useAppSelector } from '../hooks/redux'
 import { getPosts, getPostsLoadingStatus } from '../store/reducers/posts'
 import LoadingSpinner from './loadingSpinner'
 import PostPreview from './postPreview'
@@ -24,7 +24,12 @@ const PostsDesk = () => {
       )}
       {posts.map((post) => (
         <React.Fragment key={post.id}>
-          <PostPreview id={post.id} title={post.title} content={post.body} />
+          <PostPreview
+            id={post.id}
+            title={post.title}
+            content={post.body}
+           
+          />
           <hr />
         </React.Fragment>
       ))}
