@@ -2,17 +2,17 @@ import { Link } from 'react-router-dom'
 import { Card, CardBody } from 'reactstrap'
 
 export interface IPostPreviewProps {
-  id: number
+  id?: number
   title: string
-  text: string
+  content: string
 }
 
-const PostPreview = ({ id, title, text }: IPostPreviewProps) => {
+const PostPreview = ({ id, title, content }: IPostPreviewProps) => {
   return (
     <Card className='border-0 mb-4'>
       <CardBody className='p-0'>
         <Link
-          to={`/posts/${id}`}
+          to={`post/${id}`}
           style={{ textDecoration: 'none' }}
           className='text-dark'
         >
@@ -20,7 +20,7 @@ const PostPreview = ({ id, title, text }: IPostPreviewProps) => {
             <strong>{title}</strong>
           </h2>
         </Link>
-        {text}
+        {content}
       </CardBody>
     </Card>
   )

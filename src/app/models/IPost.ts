@@ -3,3 +3,9 @@ export interface IPost {
   title: string
   body: string
 }
+
+
+export interface IPostClient {
+  title: string
+  body: string
+}

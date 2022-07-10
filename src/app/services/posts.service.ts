@@ -1,4 +1,4 @@
-import { IPost } from '../models/IPost'
+import { IPost, IPostClient } from '../models/IPost'
 import httpService from './http.service'
 const postEndpoint = 'posts/'
 
@@ -7,8 +7,8 @@ const postsService = {
     const { data } = await httpService.get<IPost[]>(postEndpoint)
     return data
   },
-  createPost: async (payload: IPost) => {
-    const { data } = await httpService.post<IPost>(postEndpoint,payload)
+  createPost: async (payload: IPostClient) => {
+    const { data } = await httpService.post(postEndpoint,payload)
     return data
   },
   removePost: async (id: IPost['id']) => {
@@ -16,7 +16,7 @@ const postsService = {
     return data
   },
   updatePost: async (payload: IPost) => {
-    const { data } = await httpService.patch(
+    const { data } = await httpService.put(
       postEndpoint + payload.id,
       payload
     )

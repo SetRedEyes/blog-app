@@ -1,6 +1,6 @@
 import { RootState } from './../store'
 import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { IPost } from '../../models/IPost'
+import { IPost, IPostClient } from '../../models/IPost'
 import { AppDispatch } from '../store'
 import { checkErrorMessageType } from '../../utils/checkErrorMessageType'
 import postsService from '../../services/posts.service'
@@ -73,18 +73,37 @@ export const loadPostsList = () => async (dispatch: AppDispatch) => {
   }
 }
 
-export const createPost = (payload: IPost) => async (dispatch: AppDispatch) => {
+export const createPost = (payload: IPostClient) => async (dispatch: AppDispatch) => {
   dispatch(addPostRequested())
   try {
-      const data = await postsService.createPost(payload)
+    const data = await postsService.createPost(payload)
 
-      dispatch(postCreated(data))
+    dispatch(postCreated(data))
   } catch (error) {
-      dispatch(postsRequestFailed(checkErrorMessageType(error)))
+    dispatch(postsRequestFailed(checkErrorMessageType(error)))
   }
 }
 
+export const updatePostData =
+  (payload: IPost) => async (dispatch: AppDispatch) => {
+    dispatch(postUpdateRequested())
+    try {
+      const data = await postsService.updatePost(payload)
+      dispatch(postUpdated(data))
+      dispatch(loadPostsList())
+    } catch (error) {
+      dispatch(postsRequestFailed(checkErrorMessageType(error)))
+    }
+  }
+
 export const getPosts = () => (state: RootState) => state.posts
+
+export const getPostById = (id: any) => (state: RootState) => {
+  if (state.posts.posts.length) {
+    return state.posts.posts.find((p) => p.id === id)
+  }
+}
+
 export const getPostsLoadingStatus = () => (state: RootState) =>
   state.posts.isLoading
 export default postsReducer

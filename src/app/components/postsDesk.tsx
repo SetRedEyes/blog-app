@@ -1,22 +1,14 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import {
-  getPosts,
-  getPostsLoadingStatus,
-  loadPostsList
-} from '../store/reducers/posts'
+import {  useAppSelector } from '../hooks/redux'
+import { getPosts, getPostsLoadingStatus } from '../store/reducers/posts'
 import LoadingSpinner from './loadingSpinner'
 import PostPreview from './postPreview'
 
 const PostsDesk = () => {
-  const dispatch = useAppDispatch()
   const { posts } = useAppSelector(getPosts())
 
-  useEffect(() => {
-    dispatch(loadPostsList())
-  }, [])
   const postsLoading = useAppSelector(getPostsLoadingStatus())
 
   if (postsLoading) {
@@ -31,15 +23,10 @@ const PostsDesk = () => {
         </p>
       )}
       {posts.map((post) => (
-        <>
-        <PostPreview
-          key={post.id}
-          id={post.id}
-          title={post.title}
-          text={post.body}
-        />
-        <hr />
-        </>
+        <React.Fragment key={post.id}>
+          <PostPreview id={post.id} title={post.title} content={post.body} />
+          <hr />
+        </React.Fragment>
       ))}
     </Container>
   )

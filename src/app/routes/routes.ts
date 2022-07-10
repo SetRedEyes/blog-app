@@ -1,35 +1,27 @@
-import MainPage from '../pages/mainPage'
-import PostPage from '../pages/postPage'
-import EditPostPage from '../pages/editPostPage'
+import EditPage from '../pages/editPage'
+import Home from '../layouts/home'
 
 export interface IRoute {
-  name: string
   element: React.ComponentType
   path: string
 }
 
 export enum RouteNames {
-  MainPage = '/',
-  PostPage = '/posts/:postId',
+  Home = '/',
+  PostPage = '/post/:postId',
   CreatePostPage = '/edit',
-  EditPostPage = '/edit/:postId'
+  EditPostPage = 'edit/:postId'
 }
 
 export const routes: IRoute[] = [
-  { path: RouteNames.MainPage, element: MainPage, name: 'MainPage' },
-  {
-    path: RouteNames.PostPage,
-    element: PostPage,
-    name: 'PostPage'
-  },
+  { path: RouteNames.Home, element: Home },
+  { path: RouteNames.PostPage, element: Home },
   {
     path: RouteNames.CreatePostPage,
-    element: EditPostPage,
-    name: 'CreatePost'
+    element: EditPage
   },
   {
     path: RouteNames.EditPostPage,
-    element: EditPostPage,
-    name: 'EditPost'
+    element: EditPage
   }
 ]
