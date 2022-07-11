@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { FormFeedback, FormGroup, Input, Label } from 'reactstrap'
 
 export interface ITextFieldProps {
