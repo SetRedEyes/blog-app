@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-
+import { useEffect } from 'react'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
 import { useParams } from 'react-router-dom'
 import {
@@ -14,6 +13,7 @@ import CommentsList from './commentsList'
 
 const Comments = () => {
   const postId = useParams().postId
+
   const dispatch = useAppDispatch()
   useEffect(() => {
     dispatch(loadCommentsList(postId))
@@ -21,7 +21,6 @@ const Comments = () => {
 
   const isLoading = useAppSelector(getCommentsLoadingStatus())
   const comments = useAppSelector(getComments())
-
   const handleSubmit = (data: { [key: string]: string }) => {
     dispatch(createComment({ body: data.body, postId: Number(postId) }))
   }
@@ -38,7 +37,7 @@ const Comments = () => {
           <div className='card-body'>
             <h2>Comments</h2>
             <hr />
-           
+            {!comments.length && <p>No comments yet...</p>}
             {!isLoading ? (
               <CommentsList comments={comments} />
             ) : (

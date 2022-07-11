@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import Header from '../components/header'
 import Navigation from '../components/navigation'
-import PostsDesk from '../components/postsDesk'
+import PostsDesk from '../components/posts/postsDesk'
 import PostPage from '../pages/postPage'
 
 const Home = () => {

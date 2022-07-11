@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-
+import { Button, Form } from 'reactstrap'
 import TextAreaField from '../form/textAreaField'
 import { validator } from '../../utils/validator'
 
@@ -8,25 +8,25 @@ export interface IAddCommentFormProps {
 }
 
 const AddCommentForm = ({ onSubmit }: IAddCommentFormProps) => {
-  const [data, setData] = useState<{ [key: string]: string }>({})
+  const [data, setData] = useState({ body: '' })
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+
   const handleChange = (target: { name: string; value: string }) => {
     setData((prevState) => ({ ...prevState, [target.name]: target.value }))
   }
 
   const validatorConfig = {
-    body: { isRequired: { message: 'Сообщение не может быть пустым' } }
+    body: { isRequired: { message: 'Comment is required' } }
   }
 
   const validate = () => {
     const errors = validator(data, validatorConfig)
-
     setErrors(errors)
     return Object.keys(errors).length === 0
   }
 
   const clearForm = () => {
-    setData({})
+    setData({ body: '' })
     setErrors({})
   }
 
@@ -40,23 +40,20 @@ const AddCommentForm = ({ onSubmit }: IAddCommentFormProps) => {
 
   return (
     <div>
-      <h2>New comment</h2>
-      <form onSubmit={handleSubmit}>
+      <h2>Add New comment</h2>
+      <Form onSubmit={handleSubmit}>
         <TextAreaField
-          value={data.body || ''}
+          value={data.body}
           onChange={handleChange}
           name='body'
-          label='Comment'
-          error={errors.content}
+          error={errors.body}
         />
         <div className='d-flex justify-content-end'>
-          <button className='btn btn-primary'>Опубликовать</button>
+          <Button color='primary'>Post comment</Button>
         </div>
-      </form>
+      </Form>
     </div>
   )
 }
-
-
 
 export default AddCommentForm

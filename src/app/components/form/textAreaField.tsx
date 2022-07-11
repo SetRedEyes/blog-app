@@ -1,7 +1,7 @@
 import { FormGroup, Label } from 'reactstrap'
 
 export interface ITextAreaFieldProps {
-  label: string
+  label?: string
   name: string
   value: string
   onChange: (param1: { name: string; value: string }) => void
@@ -36,6 +36,7 @@ const TextAreaField = ({
           name={name}
           value={value}
         />
+        {error && <div className='invalid-feedback'>{error}</div>}
       </div>
     </FormGroup>
   )

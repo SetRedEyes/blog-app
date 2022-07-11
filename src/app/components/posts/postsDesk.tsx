@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Container } from 'reactstrap'
-import { useAppSelector } from '../hooks/redux'
-import { getPosts, getPostsLoadingStatus } from '../store/reducers/posts'
-import LoadingSpinner from './loadingSpinner'
+import { useAppSelector } from '../../hooks/redux'
+import { getPosts, getPostsLoadingStatus } from '../../store/reducers/posts'
+import LoadingSpinner from '../loadingSpinner'
 import PostPreview from './postPreview'
 
 const PostsDesk = () => {
@@ -14,6 +14,7 @@ const PostsDesk = () => {
   if (postsLoading) {
     return <LoadingSpinner>Loading posts...</LoadingSpinner>
   }
+
   return (
     <Container className='mt-4'>
       {!posts.length && (
@@ -28,7 +29,6 @@ const PostsDesk = () => {
             id={post.id}
             title={post.title}
             content={post.body}
-           
           />
           <hr />
         </React.Fragment>

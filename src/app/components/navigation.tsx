@@ -8,7 +8,6 @@ import {
   NavbarText
 } from 'reactstrap'
 
-export interface INavigationProps {}
 
 const Navigation = () => {
   return (

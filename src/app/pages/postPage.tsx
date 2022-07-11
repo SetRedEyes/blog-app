@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../hooks/redux'
+import { getPostById, removePost } from '../store/reducers/posts'
+import Comments from '../components/comments/comments'
+import PostPreview from '../components/posts/postPreview'
+import LoadingSpinner from '../components/loadingSpinner'
 import {
   Button,
   Container,
@@ -8,11 +13,6 @@ import {
   ModalFooter,
   ModalHeader
 } from 'reactstrap'
-import Comments from '../components/comments/comments'
-import LoadingSpinner from '../components/loadingSpinner'
-import PostPreview from '../components/postPreview'
-import { useAppDispatch, useAppSelector } from '../hooks/redux'
-import { getPostById, removePost } from '../store/reducers/posts'
 
 export interface PostPageProps {
   postId: string
@@ -72,7 +72,7 @@ const PostPage = ({ postId }: PostPageProps) => {
         <hr />
       </Container>
       <PostPreview id={post.id} title={post.title} content={post.body} />
-    <Comments/>
+      <Comments />
     </Container>
   )
 }
