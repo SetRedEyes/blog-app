@@ -8,7 +8,7 @@ import {
   getPostsLoadingStatus,
   getNewPostId
 } from '../store/reducers/posts'
-import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
+import { Button, Container, Form, FormGroup } from 'reactstrap'
 import Header from '../components/header'
 import Navigation from '../components/navigation'
 import SuccessText from '../components/successText'
@@ -27,11 +27,11 @@ const EditPage = () => {
   const dispatch = useAppDispatch()
   const post = useAppSelector(getPostById(Number(postId)))
   const postsLoading = useAppSelector(getPostsLoadingStatus())
+  const newPostId = useAppSelector(getNewPostId())
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [success, setSuccess] = useState('')
   const [isCreated, setCreated] = useState(false)
-  const newPostId = useAppSelector(getNewPostId())
 
   useEffect(() => {
     if (!postsLoading && postId && post) {
