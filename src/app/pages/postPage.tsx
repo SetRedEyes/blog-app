@@ -56,6 +56,7 @@ const PostPage = ({ postId }: PostPageProps) => {
         <hr />
       </Container>
       <PostPreview id={post.id} title={post.title} content={post.body} />
+      <hr/>
       <Comments />
     </Container>
   )

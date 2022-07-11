@@ -10,6 +10,7 @@ import {
 import LoadingSpinner from '../loadingSpinner'
 import AddCommentForm from './addCommentForm'
 import CommentsList from './commentsList'
+import { Card, CardBody } from 'reactstrap'
 
 const Comments = () => {
   const postId = useParams().postId
@@ -27,14 +28,14 @@ const Comments = () => {
 
   return (
     <>
-      <div className='card mb-2'>
-        <div className='card-body'>
+      <Card className='mb-4 mt-5'>
+        <CardBody>
           <AddCommentForm onSubmit={handleSubmit} />
-        </div>
-      </div>
+        </CardBody>
+      </Card>
       {comments && (
-        <div className='card mb-3'>
-          <div className='card-body'>
+        <Card className=' mb-3'>
+          <CardBody>
             <h2>Comments</h2>
             <hr />
             {!comments.length && <p>No comments yet...</p>}
@@ -43,8 +44,8 @@ const Comments = () => {
             ) : (
               <LoadingSpinner>Loading comments...</LoadingSpinner>
             )}
-          </div>
-        </div>
+          </CardBody>
+        </Card>
       )}
     </>
   )
