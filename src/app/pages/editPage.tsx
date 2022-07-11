@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { EditorState, ContentState, convertToRaw } from 'draft-js'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
 import {
@@ -9,11 +8,9 @@ import {
   getPostsLoadingStatus,
   getNewPostId
 } from '../store/reducers/posts'
-import LoadingSpinner from '../components/loadingSpinner'
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 import Header from '../components/header'
 import Navigation from '../components/navigation'
-import ErrorText from '../components/errorText'
 import SuccessText from '../components/successText'
 import { Link } from 'react-router-dom'
 import TextField from '../components/form/textField'
@@ -52,7 +49,7 @@ const EditPage = () => {
   const validatorConfig = {
     title: {
       isRequired: {
-        message: 'Tittle is required'
+        message: 'Title is required'
       }
     }
   }

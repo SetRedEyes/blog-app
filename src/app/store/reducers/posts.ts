@@ -115,8 +115,6 @@ export const getPosts = () => (state: RootState) => state.posts
 
 export const getPostById = (id: any) => (state: RootState) => {
   if (state.posts.posts.length) {
-    console.log(state)
-
     return state.posts.posts.find((p) => p.id === id)
   }
 }

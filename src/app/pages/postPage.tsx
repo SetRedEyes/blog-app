@@ -8,6 +8,7 @@ import {
   ModalFooter,
   ModalHeader
 } from 'reactstrap'
+import Comments from '../components/comments/comments'
 import LoadingSpinner from '../components/loadingSpinner'
 import PostPreview from '../components/postPreview'
 import { useAppDispatch, useAppSelector } from '../hooks/redux'
@@ -71,6 +72,7 @@ const PostPage = ({ postId }: PostPageProps) => {
         <hr />
       </Container>
       <PostPreview id={post.id} title={post.title} content={post.body} />
+    <Comments/>
     </Container>
   )
 }
