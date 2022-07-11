@@ -5,16 +5,8 @@ import { getPostById, removePost } from '../store/reducers/posts'
 import Comments from '../components/comments/comments'
 import PostPreview from '../components/posts/postPreview'
 import LoadingSpinner from '../components/loadingSpinner'
-import {
-  Button,
-  Container,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader
-} from 'reactstrap'
+import { Button, Container } from 'reactstrap'
 import ModalC from '../components/modal/modal'
-
 export interface PostPageProps {
   postId: string
 }
@@ -39,7 +31,12 @@ const PostPage = ({ postId }: PostPageProps) => {
   }
   return (
     <Container className='mt-5'>
-      <ModalC deleting={deleting} isOpen={modal} deletePost={deletePost}  setModal={setModal} />
+      <ModalC
+        deleting={deleting}
+        isOpen={modal}
+        deletePost={deletePost}
+        setModal={setModal}
+      />
       <Container fluid className='p-0'>
         <Button
           color='success'
@@ -56,7 +53,7 @@ const PostPage = ({ postId }: PostPageProps) => {
         <hr />
       </Container>
       <PostPreview id={post.id} title={post.title} content={post.body} />
-      <hr/>
+      <hr />
       <Comments />
     </Container>
   )
