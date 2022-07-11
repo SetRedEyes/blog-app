@@ -106,6 +106,7 @@ export const removePost =
       if (!data) {
         dispatch(postRemoved(id))
       }
+      dispatch(loadPostsList())
     } catch (error) {
       dispatch(postsRequestFailed(checkErrorMessageType(error)))
     }

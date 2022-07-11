@@ -13,6 +13,7 @@ import {
   ModalFooter,
   ModalHeader
 } from 'reactstrap'
+import ModalC from '../components/modal/modal'
 
 export interface PostPageProps {
   postId: string
@@ -25,7 +26,7 @@ const PostPage = ({ postId }: PostPageProps) => {
   const [modal, setModal] = useState<boolean>(false)
   const [deleting, setDeleting] = useState<boolean>(false)
 
-  const deleteBlog = async () => {
+  const deletePost = async () => {
     dispatch(removePost(Number(postId)))
     setDeleting(true)
     setTimeout(() => {
@@ -38,24 +39,7 @@ const PostPage = ({ postId }: PostPageProps) => {
   }
   return (
     <Container className='mt-5'>
-      <Modal isOpen={modal}>
-        <ModalHeader>Delete</ModalHeader>
-        <ModalBody>
-          {deleting ? (
-            <LoadingSpinner>Deleting...</LoadingSpinner>
-          ) : (
-            'Are you sure you want to delete this blog?'
-          )}
-        </ModalBody>
-        <ModalFooter>
-          <Button color='danger' onClick={() => deleteBlog()}>
-            Delete Permanently
-          </Button>
-          <Button color='secondary' onClick={() => setModal(false)}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
+      <ModalC deleting={deleting} isOpen={modal} deletePost={deletePost}  setModal={setModal} />
       <Container fluid className='p-0'>
         <Button
           color='success'
